@@ -20,6 +20,7 @@ ruff = "^0.14.0"
 
 [tool.pytest.ini_options]
 addopts = "-q"
+pythonpath = ["."]
 testpaths = ["tests"]
 
 [tool.ruff]
