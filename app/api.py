@@ -31,7 +31,7 @@ def _validation_scope(schema_path: Path) -> str:
     """
     if schema_path.name == "RKO0010-250.xsd":
         return "official-full"
-    return "koa020-official-form-plus-envelope-subset"
+    return "koa020-prototype-subset"
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
