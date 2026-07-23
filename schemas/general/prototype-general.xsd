@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+    targetNamespace="http://xml.e-tax.nta.go.jp/XSD/general"
+    xmlns="http://xml.e-tax.nta.go.jp/XSD/general"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+  <xsd:element name="zeimusho_CD">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <xsd:pattern value="\d{5}"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="zeimusho_NM" type="xsd:string"/>
+  <xsd:element name="era">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:nonNegativeInteger">
+        <xsd:maxInclusive value="9"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="yy">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:nonNegativeInteger">
+        <xsd:maxInclusive value="99"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+</xsd:schema>
