@@ -1,0 +1,52 @@
+{
+  "form_id": "KOA020",
+  "version": "23.0",
+  "namespace": "http://xml.e-tax.nta.go.jp/XSD/shotoku",
+  "source": "Derived from NTA KOA020-023.xsd for the prototype field subset",
+  "pages": [
+    {
+      "tag": "KOA020-1",
+      "children": [
+        {
+          "tag": "ABA00000",
+          "children": [
+            {"tag": "ABA00010"},
+            {"tag": "ABA00030"},
+            {
+              "tag": "ABA00050",
+              "children": [
+                {
+                  "tag": "ABA00060",
+                  "children": [{"tag": "ABA00090"}]
+                },
+                {"tag": "ABA00130"},
+                {"tag": "ABA00140"}
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "ABB00000",
+          "children": [
+            {
+              "tag": "ABB00010",
+              "children": [
+                {
+                  "tag": "ABB00090",
+                  "children": [
+                    {"tag": "ABB00100"},
+                    {"tag": "ABB00110"}
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "ABB00270",
+              "children": [{"tag": "ABB00350"}]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
