@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "ftj-etax-service"
+version = "1.0.0"
+description = "Generate and validate Japanese e-Tax RKO0010/KOA020 XTX files"
+authors = ["FTJ Engineering"]
+readme = "README.md"
+packages = [{ include = "app" }]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+fastapi = "^0.128.0"
+uvicorn = { version = "^0.40.0", extras = ["standard"] }
+lxml = "^6.0.0"
+pydantic = "^2.12.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.0"
+httpx = "^0.28.0"
+ruff = "^0.14.0"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
