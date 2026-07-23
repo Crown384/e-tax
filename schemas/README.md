@@ -13,9 +13,9 @@ The authoritative files used for implementation and final verification are avail
 
 Official source: https://www.e-tax.nta.go.jp/shiyo/shiyo3.htm
 
-The example output was validated against the complete official `RKO0010-250.xsd` dependency tree. Repeat that check after extracting `e-tax19.CAB`:
+The generated prototype output was validated against the complete official `RKO0010-250.xsd` dependency tree. Repeat that check after extracting `e-tax19.CAB`:
 
 ```bash
-poetry run python scripts/validate_official.py examples/koa020-sample.xtx \
+poetry run python scripts/validate_official.py /path/to/generated.xtx \
   --schema "/path/to/19XMLスキーマ/shotoku/RKO0010-250.xsd"
 ```
