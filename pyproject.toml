@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ftj-etax-service"
-version = "1.0.0"
+version = "1.1.0"
 description = "Generate and validate Japanese e-Tax RKO0010/KOA020 XTX files"
 authors = ["FTJ Engineering"]
 readme = "README.md"
