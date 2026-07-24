@@ -1,24 +1,41 @@
-# KOA020 v23 field mapping
+# Freedom Tax → KOA020 v23 mapping
 
-The mapping was derived from the NTA `Ver23x` XML structure workbook, field specification workbook, and `KOA020-023.xsd`.
+The mapping is based on the supplied `initialization.json`, the NTA Ver23 XML structure and field workbooks, and `KOA020-023.xsd`.
 
-| API field | KOA020 tag | Meaning in NTA specification | Output form path |
+## Source adapter
+
+`POST /v1/xtx/from-initialization` accepts the existing initialization object without changing its shape. Filing metadata that does not exist in that object is supplied as query parameters.
+
+| Output | Freedom Tax source | Rule | KOA020 target |
 |---|---|---|---|
-| `taxpayer.name_kana` | `ABA00130` | Taxpayer name reading / furigana | `KOA020-1/ABA00000/ABA00050/ABA00130` |
-| `income.interest_income` | `ABB00350` | Interest income amount | `KOA020-1/ABB00000/ABB00270/ABB00350` |
-| `income.public_pension_income` | `ABB00100` | Public pension gross receipts | `KOA020-1/ABB00000/ABB00010/ABB00090/ABB00100` |
-| `income.other_miscellaneous_income` | `ABB00110` | Other miscellaneous gross receipts | `KOA020-1/ABB00000/ABB00010/ABB00090/ABB00110` |
+| Taxpayer name in Katakana | `user_details.japan_name.name_in_kana` | Replace `___SEPERATOR___` with spaces | `ABA00130` → `NOZEISHA_NM_KN` |
+| Taxpayer name | `user_details.japan_name.name` | Replace separator token with spaces | `ABA00140` → `NOZEISHA_NM` |
+| Taxpayer address | `user_details.address.address` plus optional `name_of_property` | Replace separator token with spaces | `ABA00090` → `NOZEISHA_ADR` |
+| Interest income | `user_interest_income.{year}.list_all_interest[*].total_amount` | Sum items whose IDs are not in `income_meta.investment_income_meta.{year}.notReportedJapanIncomeIds` | `ABB00350` |
+| Public-pension gross receipts | First available of `user_pension_income`, `user_pension_income_details`, or `user_pension_income_details_us`; sum `list_pension_data[*].total_income` | Exclude IDs in `income_meta.pension_income_meta.{year}.notReportedJapanIncomeIds` | `ABB00100` |
+| Other miscellaneous gross receipts | `user_misc_income.{year}.list_miscellaneous_income_from_work[*].gross_payment` | Exclude IDs in `income_meta.misc_income_meta.{year}.notReportedJapanIncomeIds` | `ABB00110` |
 
-The taxpayer name, tax office, address, and tax year are defined once in the e-Tax `IT` section. KOA020 references those values using required `IDREF` fields:
+If an item list is absent, the adapter falls back to its aggregate field: `total_investment_income`, `total_pension`, or `total_gross_income_from_work`.
 
-| KOA020 tag | IDREF target |
+## Supplemental values
+
+The supplied initialization object does not contain the following submission values, so callers must provide them:
+
+| Query parameter | Purpose |
 |---|---|
-| `ABA00010` | `NENBUN` |
-| `ABA00030` | `ZEIMUSHO` |
-| `ABA00090` | `NOZEISHA_ADR` |
-| `ABA00130` | `NOZEISHA_NM_KN` |
-| `ABA00140` | `NOZEISHA_NM` |
+| `etax_user_id` | Official 16-digit 利用者識別番号 |
+| `tax_office_code` | Five-digit receiving tax-office code |
+| `tax_office_name` | Receiving tax-office name |
+| `submission_date` | Date written to the generated form |
+| `tax_year` | Source year; defaults to `2025` |
 
 ## Important semantic distinction
 
-The prototype request names use `public_pension_income` and `other_miscellaneous_income`, but the highlighted fields in the supplied scenario correspond to the **gross receipt** cells `ABB00100` and `ABB00110`. Net-income fields exist elsewhere in KOA020 (`ABB01060` and `ABB01120`) and should be added only when the upstream calculation model supplies those distinct values.
+The highlighted scenario cells are gross-receipt cells:
+
+- `ABB00100`: public-pension gross receipts
+- `ABB00110`: other miscellaneous gross receipts
+
+The separate net-income cells are `ABB01060` and `ABB01120`. They are intentionally not populated in this four-field prototype.
+
+The Freedom Tax source field is named `list_miscellaneous_income_from_work`, while the requested target is the KOA020 “other miscellaneous” gross-receipt cell. This prototype follows the scenario requested by the client; production implementation should confirm whether “work” income must instead be split into the separate 業務 category.
