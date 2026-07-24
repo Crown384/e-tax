@@ -17,5 +17,34 @@ jobs:
         run: pip install poetry==2.1.4
       - name: Install dependencies
         run: poetry install
+      - name: Lint
+        run: poetry run ruff check .
       - name: Run tests
         run: poetry run pytest
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t ftj-etax:test .
+      - name: Start container
+        run: docker run -d --name ftj-etax -p 8000:8000 ftj-etax:test
+      - name: Wait for API and run smoke test
+        shell: bash
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8000/health >/dev/null; then
+              break
+            fi
+            if [ "$attempt" -eq 30 ]; then
+              docker logs ftj-etax
+              exit 1
+            fi
+            sleep 1
+          done
+          python scripts/smoke_test.py --output /tmp/smoke-test.xtx
+          test -s /tmp/smoke-test.xtx
+      - name: Show container logs on failure
+        if: failure()
+        run: docker logs ftj-etax || true
