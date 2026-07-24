@@ -1,0 +1,58 @@
+{
+  "user_details": {
+    "japan_name": {
+      "name": "Test___SEPERATOR___User",
+      "name_in_kana": "テスト___SEPERATOR___ユーザー"
+    },
+    "address": {
+      "name_of_property": "Metro Mansion 105",
+      "postal_code": "1000001",
+      "address": "Tokyo___SEPERATOR___Chiyoda-ku___SEPERATOR___1-2-3",
+      "country": "Japan"
+    }
+  },
+  "income_meta": {
+    "investment_income_meta": {
+      "2025": {
+        "notReportedJapanIncomeIds": ["interest-excluded"]
+      }
+    },
+    "pension_income_meta": {
+      "2025": {
+        "notReportedJapanIncomeIds": ["pension-excluded"]
+      }
+    },
+    "misc_income_meta": {
+      "2025": {
+        "notReportedJapanIncomeIds": ["misc-excluded"]
+      }
+    }
+  },
+  "user_interest_income": {
+    "2025": {
+      "list_all_interest": [
+        {"id": "interest-excluded", "total_amount": 3000},
+        {"id": "interest-reportable", "total_amount": 4000}
+      ],
+      "total_investment_income": 7000
+    }
+  },
+  "user_pension_income_details_us": {
+    "2025": {
+      "list_pension_data": [
+        {"id": "pension-excluded", "total_income": 5000},
+        {"id": "pension-reportable", "total_income": 6000}
+      ],
+      "total_pension": 11000
+    }
+  },
+  "user_misc_income": {
+    "2025": {
+      "list_miscellaneous_income_from_work": [
+        {"id": "misc-reportable", "gross_payment": 7000},
+        {"id": "misc-excluded", "gross_payment": 8000}
+      ],
+      "total_gross_income_from_work": 15000
+    }
+  }
+}
